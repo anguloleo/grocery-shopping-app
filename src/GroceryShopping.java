@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class GroceryShopping {
 
-    //Check if item in stock method
+    //Method: Check if item in stock
     public static String checkStock(String[] itemsArray, String itemName) {
         for (String item : itemsArray) {
             if (itemName.equalsIgnoreCase(item)) {
@@ -12,18 +12,20 @@ public class GroceryShopping {
         return "We don't have " + itemName + " in stock!\n";
     }
 
-    //Add discount method
+    //Method: Add discount
     public static float discountCalc(float discPerc, float billTotal) {
+
         return billTotal - (billTotal * discPerc);
     }
 
+    //MAIN METHOD
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
+        //Arrays
         String[] groceryItems = new String[15];
         float[] groceryPrices = new float[15];
-
         groceryItems[0] = "Apple";
         groceryItems[1] = "Orange";
         groceryItems[2] = "Banana";
@@ -39,7 +41,6 @@ public class GroceryShopping {
         groceryItems[12] = "Soda";
         groceryItems[13] = "Chips";
         groceryItems[14] = "Watermelon";
-
         groceryPrices[0] = .50f;
         groceryPrices[1] = .80f;
         groceryPrices[2] = .20f;
@@ -57,6 +58,7 @@ public class GroceryShopping {
         groceryPrices[14] = 6.99f;
 
 
+        //Menu
         while (true) {
             System.out.println("Hello and welcome to the Grocery Shopping App");
             System.out.println("Please select from the following options:");
