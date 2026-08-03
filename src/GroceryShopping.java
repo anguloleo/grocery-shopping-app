@@ -3,20 +3,43 @@ import java.util.Scanner;
 public class GroceryShopping {
 
     //Method: Check if item in stock
-    public static String checkStock(String[] itemsArray, String itemName) {
+    public static void checkStock(String[] itemsArray, String itemName) {
+        boolean found = false;
         for (String item : itemsArray) {
             if (itemName.equalsIgnoreCase(item)) {
-                return "We have " + itemName + " in stock!\n";
+                found = true;
             }
         }
-        return "We don't have " + itemName + " in stock!\n";
+        if(found){
+            System.out.println("We have " + itemName + " in stock!\n");
+        }else{
+            System.out.println("We don't have " + itemName + " in stock!\n");
+        }
+    }
+    //Method: Discount
+    public static void discountTotal(float totalBill){
+        System.out.println("Congratulations, you get 10% off your purchase today!");
+        totalBill -= (.10f * totalBill);
+        System.out.printf("Your new total with discount applied is: $%.2f%n%n", totalBill);
+    }
+    //Method: Average Price
+    public static void averagePrice(float[] priceArray) {
+        float sumAllPrices = 0f;
+        for (float groceryPrice : priceArray) {
+            sumAllPrices += groceryPrice;
+        }
+        System.out.printf("The average price of all items is: $%.2f%n", (sumAllPrices/priceArray.length));
+    }
+    //Method: List items below a price
+    public static void listItemsBelowPrice(String[] itemArr, float[] priceArr, float maxPrice){
+        for(int i = 0; i < priceArr.length; i++) {
+            if(priceArr[i] <= maxPrice) {
+                System.out.printf("%s: $%.2f%n", itemArr[i], priceArr[i]);
+            }
+        }
     }
 
-    //Method: Add discount
-    public static float discountCalc(float discPerc, float billTotal) {
 
-        return billTotal - (billTotal * discPerc);
-    }
 
     //MAIN METHOD
     public static void main(String[] args) {
@@ -62,7 +85,8 @@ public class GroceryShopping {
         while (true) {
             System.out.println("Hello and welcome to the Grocery Shopping App");
             System.out.println("Please select from the following options:");
-            System.out.println("1. Check if item in stock\n" +
+            System.out.println(
+                    "1. Check if item in stock\n" +
                     "2. Shop for items\n" +
                     "3. Calculate average price of items\n" +
                     "4. Filter items below a price\n" +
@@ -74,7 +98,7 @@ public class GroceryShopping {
                 case "1":
                     System.out.print("What item would you like to check?");
                     String stockItemName = scanner.nextLine();
-                    System.out.println(checkStock(groceryItems, stockItemName));
+                    checkStock(groceryItems, stockItemName);
                     break;
                 case "2":
                     float totalBill = 0f;
@@ -83,7 +107,7 @@ public class GroceryShopping {
                                 "(Type \"complete\" when done adding items.) ");
                         String itemName = scanner.nextLine();
 
-                        //find item/price, add to bill
+                        //find item, add to bill
                         for (int i = 0; i < groceryItems.length; i++) {
                             if (itemName.equalsIgnoreCase(groceryItems[i])) {
                                 float itemPrice = groceryPrices[i];
@@ -102,30 +126,19 @@ public class GroceryShopping {
 
                         if (itemName.equalsIgnoreCase("complete")) {
                             System.out.println("Finished adding items\n");
-                            System.out.println("Congratulations, you get 10% off your purchase today!");
-                            totalBill = discountCalc(.10f, totalBill);
-                            System.out.printf("Your new total with discount applied is: $%.2f%n%n", totalBill);
+                            discountTotal(totalBill);
                             break;
                         }
-
-
                     }
-
                 case "3":
-                    float sumAllPrices = 0f;
-                    for (float groceryPrice : groceryPrices) {
-                        sumAllPrices += groceryPrice;
-                    }
-                    System.out.printf("The average price of all items is: $%.2f%n", (sumAllPrices/groceryPrices.length));
+                    averagePrice(groceryPrices);
+                    System.out.println();
                     break;
                 case "4":
                     System.out.print("Enter maximum price you'd like to see items for: ");
                     float maxPrice = Float.parseFloat(scanner.nextLine());
-                    for(int i = 0; i < groceryPrices.length; i++) {
-                        if(groceryPrices[i] <= maxPrice) {
-                            System.out.printf("$%s: %.2f%n", groceryItems[i], groceryPrices[i]);
-                        }
-                    }
+                    listItemsBelowPrice(groceryItems, groceryPrices, maxPrice);
+                    System.out.println();
                     break;
             }
 
