@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class GroceryShopping {
@@ -39,6 +40,17 @@ public class GroceryShopping {
         }
     }
 
+    //Method: Get item price
+    public static float getPrice(String[] groceryItems, float[] groceryPrices, String itemName) {
+        float itemPrice;
+        for (int i = 0; i < groceryItems.length; i++) {
+            if (itemName.equalsIgnoreCase(groceryItems[i])) {
+                System.out.printf("%s: $%.2f%n", groceryItems[i], groceryPrices[i]);
+                return groceryPrices[i];
+            }
+        }
+        return -1;
+    }
 
 
     //MAIN METHOD
@@ -83,69 +95,69 @@ public class GroceryShopping {
 
         //Menu
         while (true) {
-            System.out.println("Hello and welcome to the Grocery Shopping App");
-            System.out.println("Please select from the following options:");
-            System.out.println(
-                    "1. Check if item in stock\n" +
-                    "2. Shop for items\n" +
-                    "3. Calculate average price of items\n" +
-                    "4. Filter items below a price\n" +
-                    "Enter \"exit\" when ready to exit app.");
 
-            String userInput = scanner.nextLine();
+                System.out.println("Hello and welcome to the Grocery Shopping App");
+                System.out.println("Please select from the following options:");
+                System.out.println(
+                                "1. Check if item in stock\n" +
+                                "2. Shop for items\n" +
+                                "3. Calculate average price of items\n" +
+                                "4. Filter items below a price\n" +
+                                "Enter \"exit\" when ready to exit app.");
+                String userInput = scanner.nextLine();
 
-            switch (userInput) {
-                case "1":
-                    System.out.print("What item would you like to check?");
-                    String stockItemName = scanner.nextLine();
-                    checkStock(groceryItems, stockItemName);
-                    break;
-                case "2":
-                    float totalBill = 0f;
-                    while (true) {
-                        System.out.print("What items would you like to add to your cart?\n" +
-                                "(Type \"complete\" when done adding items.) ");
-                        String itemName = scanner.nextLine();
 
-                        //find item, add to bill
-                        for (int i = 0; i < groceryItems.length; i++) {
-                            if (itemName.equalsIgnoreCase(groceryItems[i])) {
-                                float itemPrice = groceryPrices[i];
+                switch (userInput) {
+                    case "1":
+                            System.out.print("What item would you like to check?");
+                            String stockItemName = scanner.nextLine();
+                            checkStock(groceryItems, stockItemName);
+                            break;
+                    case "2":
+                        float totalBill = 0f;
+                        while (true) {
+                            System.out.print("What items would you like to add to your cart?\n" +
+                                    "(Type \"complete\" when done adding items.) ");
+                            String itemName = scanner.nextLine();
 
-                                System.out.printf("%s: $%.2f%n", groceryItems[i], groceryPrices[i]);
-                                System.out.println("How many would you like? ");
-                                int quantity = Integer.parseInt(scanner.nextLine());
-                                totalBill += itemPrice * quantity;
-                                System.out.printf("You're new total is: $%.2f%n%n", totalBill);
-
-                            }else{
-                                System.out.println("We don't have " + itemName + " in stock!\n");
+                            if (itemName.equalsIgnoreCase("complete")) {
+                                System.out.println("Finished adding items\n");
+                                discountTotal(totalBill);
                                 break;
                             }
-                        }
 
-                        if (itemName.equalsIgnoreCase("complete")) {
-                            System.out.println("Finished adding items\n");
-                            discountTotal(totalBill);
-                            break;
+                            float itemPrice = getPrice(groceryItems, groceryPrices, itemName);
+                            if(itemPrice == -1){
+                                System.out.println("We don't have " + itemName + " in stock!\n");
+                                continue;
+                            }
+
+                            System.out.println("How many would you like? ");
+                            int quantity = Integer.parseInt(scanner.nextLine());
+
+                            totalBill += itemPrice * quantity;
+                            System.out.printf("You're new total is: $%.2f%n%n", totalBill);
                         }
-                    }
-                case "3":
-                    averagePrice(groceryPrices);
-                    System.out.println();
+                        break;
+                    case "3":
+                        averagePrice(groceryPrices);
+                        System.out.println();
+                        break;
+                    case "4":
+                        System.out.print("Enter maximum price you'd like to see items for: ");
+                        float maxPrice = Float.parseFloat(scanner.nextLine());
+                        listItemsBelowPrice(groceryItems, groceryPrices, maxPrice);
+                        System.out.println();
+                        break;
+                    default:
+                        System.out.println("Invalid option. Please choose 1, 2, 3, 4, or exit.");
+                }
+
+                if (userInput.equalsIgnoreCase("exit")) {   //exit app
+                    System.out.println("Thank you for using the shopping cart. Goodbye!");
                     break;
-                case "4":
-                    System.out.print("Enter maximum price you'd like to see items for: ");
-                    float maxPrice = Float.parseFloat(scanner.nextLine());
-                    listItemsBelowPrice(groceryItems, groceryPrices, maxPrice);
-                    System.out.println();
-                    break;
+                }
             }
 
-            if (userInput.equalsIgnoreCase("exit")) {   //exit app
-                System.out.println("Thank you for using the shopping cart. Goodbye!");
-                break;
-            }
-        }
     }
 }
