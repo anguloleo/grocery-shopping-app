@@ -132,11 +132,20 @@ public class GroceryShopping {
                                 continue;
                             }
 
-                            System.out.println("How many would you like? ");
-                            int quantity = Integer.parseInt(scanner.nextLine());
+                            int quantity;
+                            while(true){
+                                try {
+                                    System.out.println("How many would you like? ");
+                                    quantity = Integer.parseInt(scanner.nextLine());
+                                    break;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Please enter a number!");
+                                }
+                            }
 
                             totalBill += itemPrice * quantity;
                             System.out.printf("You're new total is: $%.2f%n%n", totalBill);
+
                         }
                         break;
                     case "3":
@@ -144,10 +153,14 @@ public class GroceryShopping {
                         System.out.println();
                         break;
                     case "4":
-                        System.out.print("Enter maximum price you'd like to see items for: ");
-                        float maxPrice = Float.parseFloat(scanner.nextLine());
-                        listItemsBelowPrice(groceryItems, groceryPrices, maxPrice);
-                        System.out.println();
+                        try {
+                            System.out.print("Enter maximum price you'd like to see items for: ");
+                            float maxPrice = Float.parseFloat(scanner.nextLine());
+                            listItemsBelowPrice(groceryItems, groceryPrices, maxPrice);
+                            System.out.println();
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a number!");
+                        }
                         break;
                     default:
                         System.out.println("Invalid option. Please choose 1, 2, 3, 4, or exit.");
