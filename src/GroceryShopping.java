@@ -41,7 +41,6 @@ public class GroceryShopping {
 
     //Method: Get item price
     public static float getPrice(String[] groceryItems, float[] groceryPrices, String itemName) {
-        float itemPrice;
         for (int i = 0; i < groceryItems.length; i++) {
             if (itemName.equalsIgnoreCase(groceryItems[i])) {
                 System.out.printf("%s: $%.2f%n", groceryItems[i], groceryPrices[i]);
