@@ -16,12 +16,14 @@ public class GroceryShopping {
             System.out.println("We don't have " + itemName + " in stock!\n");
         }
     }
+
     //Method: Discount
     public static void discountTotal(float totalBill){
         System.out.println("Congratulations, you get 10% off your purchase today!");
         totalBill -= (.10f * totalBill);
         System.out.printf("Your new total with discount applied is: $%.2f%n%n", totalBill);
     }
+
     //Method: Average Price
     public static void averagePrice(float[] priceArray) {
         float sumAllPrices = 0f;
@@ -30,6 +32,7 @@ public class GroceryShopping {
         }
         System.out.printf("The average price of all items is: $%.2f%n", (sumAllPrices/priceArray.length));
     }
+
     //Method: List items below a price
     public static void listItemsBelowPrice(String[] itemArr, float[] priceArr, float maxPrice){
         for(int i = 0; i < priceArr.length; i++) {
